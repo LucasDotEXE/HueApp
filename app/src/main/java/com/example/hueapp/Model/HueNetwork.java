@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class HueNetwork implements Parcelable {
@@ -14,10 +17,37 @@ public class HueNetwork implements Parcelable {
     private ArrayList<HueLamp> hueLamps;
 
 
+
     public HueNetwork(@NonNull String url) {
         this.url = url;
         this.hueLamps = new ArrayList<>();
     }
+
+    public HueNetwork(@NonNull String url, JSONObject jsonHueNetwork) {
+        this.url = url;
+        this.hueLamps = new ArrayList<>();
+        try {
+            this.config = new BridgeConfig(jsonHueNetwork.getJSONObject("config"));
+            this.hueLamps = getHueLampsFromJson(jsonHueNetwork.getJSONObject("lights"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ArrayList<HueLamp> getHueLampsFromJson(JSONObject lights) {
+
+        ArrayList<HueLamp> lamps = new ArrayList<>();
+        try {
+            int i = 1;
+            while (true) {
+                lamps.add(new HueLamp(lights.getJSONObject("" + i + "")));
+                i++;
+            }
+        } catch (JSONException e) {
+            return lamps;
+        }
+    }
+
 
     public  HueNetwork() {
         this.hueLamps = new ArrayList<>();

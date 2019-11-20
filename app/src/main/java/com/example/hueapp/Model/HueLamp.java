@@ -32,20 +32,20 @@ public class HueLamp implements Parcelable {
             JSONObject state = jsonLamp.getJSONObject("state");
             this.isOn = state.getBoolean("on");
             this.brightness = state.getInt("bri");
-            this.hue = state.getInt("hue");
+            //this.hue = state.getInt("hue");
             this.saturation = state.getInt("sat");
             this.effect = state.getString("effect");
             this.reachable = state.getBoolean("reachable");
-            JSONArray xy = state.getJSONArray("xy");
-            this.x = xy.getDouble(0);
-            this.y = xy.getDouble(1);
+//            JSONArray xy = state.getJSONArray("xy");
+//            this.x = xy.getDouble(0);
+//            this.y = xy.getDouble(1);
 
             //extra
             this.name = jsonLamp.getString("name");
             this.type = jsonLamp.getString("type");
-            this.modelId = jsonLamp.getString("modleid");
-            this.manufacturerName = jsonLamp.getString("manufacturername");
-            this.productName = jsonLamp.getString("productname");
+//            this.modelId = jsonLamp.getString("modleid");
+//            this.manufacturerName = jsonLamp.getString("manufacturername");
+//            this.productName = jsonLamp.getString("productname");
 
         } catch (JSONException e) {
             e.printStackTrace();

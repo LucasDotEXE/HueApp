@@ -50,11 +50,11 @@ public class MainActivity_HeuNetworkAdapter extends RecyclerView.Adapter<MainAct
         if (hueLamp.isReachable()) {
             if (hueLamp.isOn()) {
                 Picasso.get()
-                        .load("https://icons8.com/web-app/67288/rgb_lamp")
+                        .load("https://img.icons8.com/ios-glyphs/30/000000/rgb-lamp.png")
                         .into(holder.imageAvailibility);
             } else {
                 Picasso.get()
-                        .load("https://icons8.com/web-app/19178/globe_bulb")
+                        .load("https://img.icons8.com/material/24/000000/light--v1.png")
                         .into(holder.imageAvailibility);
             }
         } else {
