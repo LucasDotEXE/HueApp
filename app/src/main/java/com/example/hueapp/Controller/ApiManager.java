@@ -10,33 +10,35 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hueapp.Controller.ApiInterface.TokenListener;
 import com.example.hueapp.Model.HueNetwork;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ApiManager {
 
     RequestQueue queue;
-    ApiListener listener;
 
-    public ApiManager(Context context, ApiListener apiListener) {
+
+    public ApiManager(Context context) {
         this.queue = Volley.newRequestQueue(context);
-        this.listener = apiListener;
     }
 
 
-    public void getAllInfo(final String url) {
+    public void getAllInfo(final HueNetwork network, final ApiListener listener) {
         final JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                "http://145.49.38.213/api/89ca8e653a5e6abef8e02c403ebcf8a",
+                "http://" + network.getIp() +"/api/" + network.getToken(),
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.e("API Manager", "Thing recieved");
-                        listener.onHueNetwortReteurned(new HueNetwork(url, response));
+                        listener.onHueNetwortReteurned(new HueNetwork(network.getIp(), network.getToken(), response));
                     }
                 },
                 new Response.ErrorListener() {
@@ -102,5 +104,47 @@ public class ApiManager {
             }
         });
         this.queue.add(request);
+    }
+
+    public void getNetworkToken(final HueNetwork network, final TokenListener listener) {
+        try {
+            final JsonRequest request = new CustomJsonArrayRequest(
+                    Request.Method.POST,
+                    "http://" + network.getIp() + "/api",
+                    new JSONObject("{\"devicetype\" : \"HeuApp\"}"),
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }
+            );
+            request.setRetryPolicy(new RetryPolicy() {
+                @Override
+                public int getCurrentTimeout() {
+                    return 5000;
+                }
+
+                @Override
+                public int getCurrentRetryCount() {
+                    return 5000;
+                }
+
+                @Override
+                public void retry(VolleyError error) throws VolleyError {
+                    Log.e("API Mager GetToken", error.getMessage());
+                    error.printStackTrace();
+                }
+            });
+            this.queue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

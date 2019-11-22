@@ -16,15 +16,21 @@ public class HueNetwork implements Parcelable {
     private BridgeConfig config;
     private ArrayList<HueLamp> hueLamps;
 
+    private String ip;
+    private String token = "NoTokenFound";
 
 
-    public HueNetwork(@NonNull String url) {
-        this.url = url;
+
+    public HueNetwork(@NonNull String ip) {
+
+        this.ip = ip;
         this.hueLamps = new ArrayList<>();
     }
 
-    public HueNetwork(@NonNull String url, JSONObject jsonHueNetwork) {
-        this.url = url;
+    public HueNetwork(@NonNull String ip, @NonNull String token, JSONObject jsonHueNetwork) {
+        this.ip = ip;
+        this.token = token;
+
         this.hueLamps = new ArrayList<>();
         try {
             this.config = new BridgeConfig(jsonHueNetwork.getJSONObject("config"));
@@ -77,6 +83,22 @@ public class HueNetwork implements Parcelable {
         this.hueLamps = hueLamps;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     protected HueNetwork(Parcel in) {
         url = in.readString();
         config = (BridgeConfig) in.readValue(BridgeConfig.class.getClassLoader());
@@ -117,4 +139,9 @@ public class HueNetwork implements Parcelable {
             return new HueNetwork[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return ip;
+    }
 }

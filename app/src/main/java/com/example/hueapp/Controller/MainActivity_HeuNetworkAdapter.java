@@ -52,10 +52,12 @@ public class MainActivity_HeuNetworkAdapter extends RecyclerView.Adapter<MainAct
                 Picasso.get()
                         .load("https://img.icons8.com/ios-glyphs/30/000000/rgb-lamp.png")
                         .into(holder.imageAvailibility);
+                Log.d("LampAdapter", "Lamp onn");
             } else {
                 Picasso.get()
                         .load("https://img.icons8.com/material/24/000000/light--v1.png")
                         .into(holder.imageAvailibility);
+                Log.d("LampAdapter", "Lamp off");
             }
         } else {
             Log.e("LampError", "Lamp: " + hueLamp + "\nIsn't reachable");

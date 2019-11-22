@@ -1,27 +1,25 @@
-package com.example.hueapp;
+package com.example.hueapp.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toolbar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hueapp.Controller.ApiListener;
 import com.example.hueapp.Controller.ApiManager;
 import com.example.hueapp.Controller.MainActivity_HeuNetworkAdapter;
+import com.example.hueapp.Model.CentralVariables;
 import com.example.hueapp.Model.HueNetwork;
+import com.example.hueapp.R;
 import com.example.hueapp.TestingHelpers.HueNetworkTestHelper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity implements ApiListener {
 
-    private HueNetwork network;
+    private HueNetwork selectedNetwork;
     private MainActivity_HeuNetworkAdapter adapter;
     private ApiManager manager;
 
@@ -33,18 +31,27 @@ public class MainActivity extends AppCompatActivity implements ApiListener {
         setContentView(R.layout.activity_main);
 
 
+        this.selectedNetwork = CentralVariables.getInstance().getNetwork();
+        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(
+                        v.getContext(), APIConnectionSettings.class);
+                        intent.putExtra("SelectedNetwork", selectedNetwork);
+                        v.getContext().startActivity(intent);
+            }
+        });
 
-        this.network = HueNetworkTestHelper.LucasLocalTestNetwork;
-
-        this.manager = new ApiManager(this, this);
-        manager.getAllInfo(network.getUrl());
+        this.manager = new ApiManager(this);
+        manager.getAllInfo(selectedNetwork, this);
 
         this.recyclerView = findViewById(R.id.mainRecyclerview);
         recyclerView.setLayoutManager(new GridLayoutManager(
                 this,1,GridLayoutManager.VERTICAL, false
         ));
 
-        this.adapter = new MainActivity_HeuNetworkAdapter(network.getHueLamps());
+        this.adapter = new MainActivity_HeuNetworkAdapter(selectedNetwork.getHueLamps());
         recyclerView.setAdapter(adapter);
 
 
@@ -68,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements ApiListener {
 
     @Override
     public void onHueNetwortReteurned(HueNetwork network) {
-        this.network = network;
+        this.selectedNetwork = network;
         adapter.setDataSet(network.getHueLamps());
         adapter.notifyDataSetChanged();
     }
