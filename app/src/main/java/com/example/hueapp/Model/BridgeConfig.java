@@ -17,9 +17,9 @@ public class BridgeConfig implements Parcelable {
         try {
             this.name = jsonConfig.getString("name");
             this.ipaddress = jsonConfig.getString("ipaddress");
-            this.localTime = jsonConfig.getString("localtime");
-            this.timeZone = jsonConfig.getString("timezone");
-            this.apiVersion = jsonConfig.getString("apiversion");
+//            this.localTime = jsonConfig.getString("localtime");
+//            this.timeZone = jsonConfig.getString("timezone");
+//            this.apiVersion = jsonConfig.getString("apiversion");
 
         } catch (JSONException e) {
             e.printStackTrace();
