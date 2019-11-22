@@ -18,12 +18,11 @@ import com.madrapps.pikolo.listeners.SimpleColorSelectionListener;
 
 public class ColorPickerFragment extends Fragment {
     private ColorPicker colorPicker;
-    private OnFragmentInteractionListener mListener;
+    private OnColorPickerFragmentInteractionListener mListener;
 
     public ColorPickerFragment() {
         // Required empty public constructor
     }
-
 
     public static ColorPickerFragment newInstance() {
         ColorPickerFragment fragment = new ColorPickerFragment();
@@ -48,23 +47,15 @@ public class ColorPickerFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_colorpicker, container, false);
     }
 
-    //Default unused method
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnColorPickerFragmentInteractionListener) {
+            mListener = (OnColorPickerFragmentInteractionListener) context;
 
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnColorPickerFragmentInteractionListener");
         }
     }
 
@@ -97,9 +88,8 @@ public class ColorPickerFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnColorPickerFragmentInteractionListener {
+
         void onColorSelect(int color);
     }
 }
