@@ -19,6 +19,10 @@ import com.example.hueapp.R;
 import com.example.hueapp.TestingHelpers.HueNetworkTestHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements ApiListener {
 
     private HueNetwork selectedNetwork;
@@ -26,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements ApiListener {
     private ApiManager manager;
 
     private RecyclerView recyclerView;
+    private HueNetwork network;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +65,13 @@ public class MainActivity extends AppCompatActivity implements ApiListener {
         adapter.notifyDataSetChanged();
     }
 
-    @Override
+   /* @Override
     public void onLampsReturned(JSONArray response) {
 
         //TODO fix to work with JSONARRAY
         ArrayList<HueLamp> list = new ArrayList<>();
         this.network.setHueLamps(list);
-    }
+    }*/
 
     @Override
     public void onError() {
@@ -79,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements ApiListener {
     }
 
     @Override
-    public void onHueNetwortReteurned(HueNetwork network) {
+    public void onHueNetworkReturned(HueNetwork network) {
         this.selectedNetwork = network;
         adapter.setDataSet(network.getHueLamps());
         adapter.notifyDataSetChanged();

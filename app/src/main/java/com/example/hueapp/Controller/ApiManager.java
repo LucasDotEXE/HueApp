@@ -12,7 +12,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.hueapp.Model.HueLamp;
 import com.example.hueapp.Controller.ApiInterface.TokenListener;
 import com.example.hueapp.Model.HueNetwork;
 
@@ -39,7 +38,7 @@ public class ApiManager {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.e("API Manager", "Thing recieved");
-                        listener.onHueNetwortReteurned(new HueNetwork(network.getIp(), network.getToken(), response));
+                        listener.onHueNetworkReturned(new HueNetwork(network.getIp(), network.getToken(), response));
                     }
                 },
                 new Response.ErrorListener() {

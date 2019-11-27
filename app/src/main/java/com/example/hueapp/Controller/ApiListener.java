@@ -6,9 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public interface ApiListener {
-    void onLampsReturned(JSONArray response);
+    //void onLampsReturned(JSONArray response);
     void onError();
     void onLampStateReturned();
-    void onHueNetwortReteurned(HueNetwork network);
+    void onHueNetworkReturned(HueNetwork network);
 
 }

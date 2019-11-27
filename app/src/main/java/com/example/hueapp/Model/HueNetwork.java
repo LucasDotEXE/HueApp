@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class HueNetwork implements Parcelable {
 
-    private String url; //URL with token
+    //private String url; //URL with token
     private BridgeConfig config;
     private ArrayList<HueLamp> hueLamps;
 
@@ -61,13 +61,13 @@ public class HueNetwork implements Parcelable {
         this.hueLamps = new ArrayList<>();
     }
 
-    public String getUrl() {
+    /*public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
-    }
+    }*/
 
     public BridgeConfig getConfig() {
         return config;
@@ -102,7 +102,7 @@ public class HueNetwork implements Parcelable {
     }
 
     protected HueNetwork(Parcel in) {
-        url = in.readString();
+        //url = in.readString();
         config = (BridgeConfig) in.readValue(BridgeConfig.class.getClassLoader());
         if (in.readByte() == 0x01) {
             hueLamps = new ArrayList<HueLamp>();
@@ -141,7 +141,7 @@ public class HueNetwork implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(url);
+        //dest.writeString(url);
         dest.writeValue(config);
         if (hueLamps == null) {
             dest.writeByte((byte) (0x00));
