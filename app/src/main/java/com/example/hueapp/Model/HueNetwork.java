@@ -112,27 +112,7 @@ public class HueNetwork implements Parcelable {
         }
     }
 
-    public void sendUpdateToHue(int id, HueLamp lamp)
-    {
-        JSONObject data = new JSONObject();
-        try {
-            if (lamp.isOn()) {
-                data.put("on", lamp.isOn());
-                data.put("hue", lamp.getHue());
-                data.put("bri", lamp.getBrightness());
-                data.put("sat", lamp.getSaturation());
-            }
-            else
-            {
-                data.put("on", lamp.isOn());
-            }
-            //Todo: implement Json put
-            //new JsonObjectRequest()
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public int describeContents() {

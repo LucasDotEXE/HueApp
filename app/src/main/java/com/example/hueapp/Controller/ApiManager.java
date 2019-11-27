@@ -13,6 +13,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hueapp.Controller.ApiInterface.TokenListener;
+import com.example.hueapp.Model.HueLamp;
 import com.example.hueapp.Model.HueNetwork;
 
 import org.json.JSONArray;
@@ -104,6 +105,31 @@ public class ApiManager {
             }
         });
         this.queue.add(request);
+    }
+
+    public void sendUpdateToHue(HueNetwork network, int id, HueLamp lamp)
+    {
+        JSONObject data = new JSONObject();
+        try {
+            if (lamp.isOn()) {
+                data.put("on", lamp.isOn());
+                data.put("hue", lamp.getHue());
+                data.put("bri", lamp.getBrightness());
+                data.put("sat", lamp.getSaturation());
+            }
+            else
+            {
+                data.put("on", lamp.isOn());
+            }
+            JsonObjectRequest toSend = new JsonObjectRequest(Request.Method.PUT,
+                    "http://" + network.getIp() + "/api/" + network.getToken() + "/lights/" + id + "/state",
+                    data,
+                    null, null);
+
+            this.queue.add(toSend);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getNetworkToken(final HueNetwork network, final TokenListener listener) {
