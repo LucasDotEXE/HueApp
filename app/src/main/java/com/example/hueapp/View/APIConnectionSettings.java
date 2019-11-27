@@ -1,10 +1,9 @@
 package com.example.hueapp.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,6 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class APIConnectionSettings extends AppCompatActivity implements TokenListener {
+
+    private final TokenListener tokenListener = this;
+    private HueNetwork selectedNetwork;
 
     private TextView ip;
     private TextView token;
@@ -60,7 +62,9 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 HueNetwork hueNetwork = (HueNetwork) parent.getSelectedItem();
+                selectedNetwork = getSelectedHueNetwork();
                 displayUserData(hueNetwork);
+                updateUiInfo();
             }
 
             @Override
@@ -68,27 +72,31 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
 
             }
         });
-        HueNetwork hueNetwork = CentralVariables.getInstance().getNetwork();
 
-        ip.setText("IP: " + hueNetwork.getIp());
-        token.setText("Token: " + hueNetwork.getToken());
+        selectedNetwork = CentralVariables.getInstance().getNetwork();
+
+
 
 
         tokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                manager.getNetworkToken(selectedNetwork, tokenListener);
             }
         });
 
         manager = new ApiManager(this);
-        manager.getNetworkToken(hueNetwork, this);
+        //manager.getNetworkToken(selectedNetwork, this);
 
 
     }
 
+    private void updateUiInfo() {
+        ip.setText("IP: " + selectedNetwork.getIp());
+        token.setText("Token: " + selectedNetwork.getToken());
+    }
 
-    private HueNetwork getSelectedUser() {
+    private HueNetwork getSelectedHueNetwork() {
         return(HueNetwork) spinner.getSelectedItem();
     }
 
@@ -101,11 +109,12 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
 
     @Override
     public void onTokenAvaileable(String token) {
-
+        Log.i("API Connection", "Token: " + token);
+        updateUiInfo();
     }
 
     @Override
     public void onTokenError() {
-
+        Log.e("API Connection", "Couldnt get token");
     }
 }

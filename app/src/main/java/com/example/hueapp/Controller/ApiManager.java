@@ -115,13 +115,19 @@ public class ApiManager {
                     new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
-
+                            try {
+                                String token = response.getJSONObject(0).getJSONObject("success").getString("username");
+                                network.setToken(token);
+                                listener.onTokenAvaileable(token);
+                            } catch (JSONException e) {
+                                listener.onTokenError();
+                            }
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            listener.onTokenError();
                         }
                     }
             );
