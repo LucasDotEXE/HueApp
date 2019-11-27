@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 
 public class HueNetwork implements Parcelable {
 
-    private String url;
+    private String url; //URL with token
     private BridgeConfig config;
     private ArrayList<HueLamp> hueLamps;
 
@@ -107,6 +109,28 @@ public class HueNetwork implements Parcelable {
             in.readList(hueLamps, HueLamp.class.getClassLoader());
         } else {
             hueLamps = null;
+        }
+    }
+
+    public void sendUpdateToHue(int id, HueLamp lamp)
+    {
+        JSONObject data = new JSONObject();
+        try {
+            if (lamp.isOn()) {
+                data.put("on", lamp.isOn());
+                data.put("hue", lamp.getHue());
+                data.put("bri", lamp.getBrightness());
+                data.put("sat", lamp.getSaturation());
+            }
+            else
+            {
+                data.put("on", lamp.isOn());
+            }
+            //Todo: implement Json put
+            //new JsonObjectRequest()
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

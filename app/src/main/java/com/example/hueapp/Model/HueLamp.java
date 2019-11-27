@@ -28,6 +28,9 @@ public class HueLamp implements Parcelable {
 
     public HueLamp(JSONObject jsonLamp) {
         try {
+
+
+
             //state
             JSONObject state = jsonLamp.getJSONObject("state");
             this.isOn = state.getBoolean("on");

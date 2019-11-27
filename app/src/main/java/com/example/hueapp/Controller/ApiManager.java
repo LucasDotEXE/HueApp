@@ -12,6 +12,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hueapp.Model.HueLamp;
 import com.example.hueapp.Controller.ApiInterface.TokenListener;
 import com.example.hueapp.Model.HueNetwork;
 

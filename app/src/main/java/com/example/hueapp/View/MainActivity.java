@@ -59,8 +59,11 @@ public class MainActivity extends AppCompatActivity implements ApiListener {
     }
 
     @Override
-    public void onLampsReturned() {
+    public void onLampsReturned(JSONArray response) {
 
+        //TODO fix to work with JSONARRAY
+        ArrayList<HueLamp> list = new ArrayList<>();
+        this.network.setHueLamps(list);
     }
 
     @Override
