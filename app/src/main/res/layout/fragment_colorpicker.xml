@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00FFFFFF"
+    android:backgroundTint="#00FDFDFD"
+    tools:context="com.example.hueapp.ColorPickerFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <com.madrapps.pikolo.HSLColorPicker
+        android:id="@+id/colorpicker"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.madrapps.pikolo.HSLColorPicker>
+
+    <!--<com.madrapps.pikolo.HSLColorPicker-->
+    <!--android:id="@+id/colorPicker"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:padding="0dp"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/randomColorButton"-->
+    <!--app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--app:layout_constraintRight_toRightOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent"-->
+    <!--pikolo:lightness_indicator_stroke_width="0dp"-->
+    <!--pikolo:arc_length="110"-->
+    <!--pikolo:hue_start_angle="30"-->
+    <!--pikolo:lightness_start_angle="270"-->
+    <!--pikolo:radius_offset="20dp"-->
+    <!--pikolo:saturation_indicator_stroke_color="@color/colorPrimary"-->
+    <!--pikolo:saturation_start_angle="150"-->
+    <!--tools:layout_constraintBottom_creator="1"-->
+    <!--tools:layout_constraintLeft_creator="1"-->
+    <!--tools:layout_constraintRight_creator="1"-->
+    <!--tools:layout_constraintTop_creator="1" />-->
+
+
+</FrameLayout>

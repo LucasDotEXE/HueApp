@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements NetworkListener {
     private ApiManager manager;
 
     private RecyclerView recyclerView;
+    private HueNetwork network;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,13 @@ public class MainActivity extends AppCompatActivity implements NetworkListener {
         manager.getAllInfo(selectedNetwork, this);
         adapter.notifyDataSetChanged();
     }
+   /* @Override
+    public void onLampsReturned(JSONArray response) {
+
+        //TODO fix to work with JSONARRAY
+        ArrayList<HueLamp> list = new ArrayList<>();
+        this.network.setHueLamps(list);
+    }*/
 
     @Override
     public void onHueNetworkError() {
