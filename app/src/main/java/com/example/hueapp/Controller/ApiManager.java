@@ -12,6 +12,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hueapp.Controller.ApiInterface.NetworkListener;
 import com.example.hueapp.Controller.ApiInterface.TokenListener;
 import com.example.hueapp.Model.HueNetwork;
 
@@ -29,7 +30,7 @@ public class ApiManager {
     }
 
 
-    public void getAllInfo(final HueNetwork network, final ApiListener listener) {
+    public void getAllInfo(final HueNetwork network, final NetworkListener listener) {
         final JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
                 "http://" + network.getIp() +"/api/" + network.getToken(),
@@ -38,13 +39,18 @@ public class ApiManager {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.e("API Manager", "Thing recieved");
-                        listener.onHueNetwortReteurned(new HueNetwork(network.getIp(), network.getToken(), response));
+                        listener.onHueNetworkAvailable(new HueNetwork(network.getIp(), network.getToken(), response));
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("ApiManager getAllInfo", error.getMessage());
+                        if (error.getMessage().contains("unauthorized user")) {
+                            Log.e("ApiManager getAllInfo", "Token invallid no acces granted");
+                        } else {
+                            Log.e("ApiManager getAllInfo", error.getMessage());
+                        }
+
                         //error.printStackTrace();
                     }
                 }
@@ -65,6 +71,8 @@ public class ApiManager {
                 Log.d("VOLLEY_REQ", error.toString());
             }
         });
+
+
         this.queue.add(request);
     }
 
@@ -118,7 +126,7 @@ public class ApiManager {
                             try {
                                 String token = response.getJSONObject(0).getJSONObject("success").getString("username");
                                 network.setToken(token);
-                                listener.onTokenAvaileable(token);
+                                listener.onTokenAvailable(token);
                             } catch (JSONException e) {
                                 listener.onTokenError();
                             }

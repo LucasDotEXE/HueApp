@@ -8,16 +8,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.hueapp.Controller.ApiListener;
+import com.example.hueapp.Controller.ApiInterface.NetworkListener;
 import com.example.hueapp.Controller.ApiManager;
 import com.example.hueapp.Controller.MainActivity_HeuNetworkAdapter;
 import com.example.hueapp.Model.CentralVariables;
 import com.example.hueapp.Model.HueNetwork;
 import com.example.hueapp.R;
-import com.example.hueapp.TestingHelpers.HueNetworkTestHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class MainActivity extends AppCompatActivity implements ApiListener {
+public class MainActivity extends AppCompatActivity implements NetworkListener {
 
     private HueNetwork selectedNetwork;
     private MainActivity_HeuNetworkAdapter adapter;
@@ -30,12 +29,13 @@ public class MainActivity extends AppCompatActivity implements ApiListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         this.selectedNetwork = CentralVariables.getInstance().getNetwork();
+        
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CentralVariables.getInstance().setNetwork(selectedNetwork);
                 Intent intent = new Intent(
                         v.getContext(), APIConnectionSettings.class);
                         intent.putExtra("SelectedNetwork", selectedNetwork);
@@ -54,27 +54,25 @@ public class MainActivity extends AppCompatActivity implements ApiListener {
         this.adapter = new MainActivity_HeuNetworkAdapter(selectedNetwork.getHueLamps());
         recyclerView.setAdapter(adapter);
 
+        manager.getAllInfo(selectedNetwork, this);
 
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onLampsReturned() {
+    protected void onResume() {
+        super.onResume();
+        manager.getAllInfo(selectedNetwork, this);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onHueNetworkError() {
 
     }
 
     @Override
-    public void onError() {
-
-    }
-
-    @Override
-    public void onLampStateReturned() {
-
-    }
-
-    @Override
-    public void onHueNetwortReteurned(HueNetwork network) {
+    public void onHueNetworkAvailable(HueNetwork network) {
         this.selectedNetwork = network;
         adapter.setDataSet(network.getHueLamps());
         adapter.notifyDataSetChanged();

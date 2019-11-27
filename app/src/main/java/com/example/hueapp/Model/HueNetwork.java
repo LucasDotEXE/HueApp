@@ -22,8 +22,12 @@ public class HueNetwork implements Parcelable {
 
 
     public HueNetwork(@NonNull String ip) {
+        this(ip, "No Token Found");
+    }
 
+    public HueNetwork(@NonNull String ip, @NonNull String token) {
         this.ip = ip;
+        this.token = token;
         this.hueLamps = new ArrayList<>();
     }
 
