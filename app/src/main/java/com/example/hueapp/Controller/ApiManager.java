@@ -39,7 +39,7 @@ public class ApiManager {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("API Manager", "Thing recieved");
+                        Log.i("APIManagerGetAllInfo()", "Thing received");
                         listener.onHueNetworkAvailable(new HueNetwork(network.getIp(), network.getToken(), response));
                     }
                 },
@@ -179,7 +179,7 @@ public class ApiManager {
 
                 @Override
                 public void retry(VolleyError error) throws VolleyError {
-                    Log.e("API Mager GetToken", error.getMessage());
+                    Log.e("API Mager GetToken", error.getMessage() + "");
                     error.printStackTrace();
                 }
             });

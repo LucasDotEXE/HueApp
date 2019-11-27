@@ -59,6 +59,8 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
         networks.add(new HueNetwork("145.48.205.33", "iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB"));
         networks.add(HueNetworkTestHelper.LucasLocalTextNetworkEmpty);
         networks.add(new HueNetwork("145.49.15.52"));
+        networks.add(new HueNetwork("192.168.1.179", "zzzMr8hp0ikDLnj-giTMF7z6Q6fai38lYGOpkEJE"));
+        networks.add(new HueNetwork("192.168.1.191"));
         //==========================================================
 
         ArrayAdapter<HueNetwork> adapter = new ArrayAdapter<HueNetwork>(this,
@@ -69,8 +71,8 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 HueNetwork hueNetwork = (HueNetwork) parent.getSelectedItem();
-                selectedNetwork = getSelectedHueNetwork();
-                displayUserData(hueNetwork);
+                CentralVariables.getInstance().setNetwork(hueNetwork);
+                //displayUserData(hueNetwork);
                 updateUiInfo();
             }
 
@@ -92,25 +94,21 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
             }
         });
 
-
-
         tokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 manager.getNetworkToken(selectedNetwork, tokenListener);
             }
         });
 
         manager = new ApiManager(this);
         //manager.getNetworkToken(selectedNetwork, this);
-
         setSelectedNetwork();
     }
 
     private void updateUiInfo() {
-        ip.setText("IP: " + selectedNetwork.getIp());
-        token.setText("Token: " + selectedNetwork.getToken());
+        ip.setText("IP: " + CentralVariables.getInstance().getNetwork().getIp());
+        token.setText("Token: " + CentralVariables.getInstance().getNetwork().getToken());
     }
 
     private HueNetwork getSelectedHueNetwork() {
@@ -118,19 +116,15 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
     }
 
     private void setSelectedNetwork() {
-        Log.e("Test(APIConSet)", CentralVariables.getInstance().getNetwork().getIp());
         for (HueNetwork network : networks) {
             if (network.getIp().equals(
                     CentralVariables.getInstance().getNetwork().getIp()
             )) {
                 spinner.setSelection(networks.indexOf(network), true);
-//                Log.e("Test", "dsghjdsgfhj;lgfdelkbjgflkbj");
-            } else {
-//                Log.e("Test", network.getIp());
             }
         }
-
     }
+
     private void displayUserData(HueNetwork user) {
         String ip = user.getIp();
         String token = user.getToken();
