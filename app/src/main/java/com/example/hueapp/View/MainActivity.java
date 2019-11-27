@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.hueapp.Controller.ApiInterface.NetworkListener;
 import com.example.hueapp.Controller.ApiManager;
@@ -18,14 +19,15 @@ import com.example.hueapp.Model.HueNetwork;
 import com.example.hueapp.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class MainActivity extends AppCompatActivity implements NetworkListener {
+public class MainActivity extends AppCompatActivity implements NetworkListener, SwipeRefreshLayout.OnRefreshListener {
 
     private HueNetwork selectedNetwork;
     private MainActivity_HeuNetworkAdapter adapter;
     private ApiManager manager;
 
+    private SwipeRefreshLayout refreshLayout;
     private RecyclerView recyclerView;
-    private HueNetwork network;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,14 @@ public class MainActivity extends AppCompatActivity implements NetworkListener {
         manager.getAllInfo(selectedNetwork, this);
 
         this.recyclerView = findViewById(R.id.mainRecyclerview);
+        this.refreshLayout = findViewById(R.id.refreshContainer);
+
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+
         recyclerView.setLayoutManager(new GridLayoutManager(
                 this,1,GridLayoutManager.VERTICAL, false
         ));
@@ -58,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements NetworkListener {
         recyclerView.setAdapter(adapter);
 
         manager.getAllInfo(selectedNetwork, this);
-
         adapter.notifyDataSetChanged();
     }
 
@@ -79,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements NetworkListener {
     @Override
     public void onHueNetworkError() {
 
+        refreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -86,5 +96,13 @@ public class MainActivity extends AppCompatActivity implements NetworkListener {
         this.selectedNetwork = network;
         adapter.setDataSet(network.getHueLamps());
         adapter.notifyDataSetChanged();
+        refreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onRefresh() {
+
+        refreshLayout.setRefreshing(true);
+        manager.getAllInfo(selectedNetwork, this);
     }
 }

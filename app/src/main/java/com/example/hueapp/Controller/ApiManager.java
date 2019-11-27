@@ -51,6 +51,7 @@ public class ApiManager {
                         } else {
                             Log.e("ApiManager getAllInfo", error.getMessage());
                         }
+                        listener.onHueNetworkError();
 
                         //error.printStackTrace();
                     }
