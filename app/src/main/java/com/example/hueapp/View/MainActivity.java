@@ -87,6 +87,14 @@ public class MainActivity extends AppCompatActivity implements NetworkListener, 
 
     @Override
     public void onHueNetworkError() {
+    protected void onResume() {
+        super.onResume();
+        manager.getAllInfo(selectedNetwork, this);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onError() {
 
         refreshLayout.setRefreshing(false);
     }
