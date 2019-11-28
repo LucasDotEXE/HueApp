@@ -68,7 +68,7 @@ public class ApiManager {
         });
         this.queue.add(request);
     }
-
+/*
 
     public void getLampInfo() {
         final JsonArrayRequest request = new JsonArrayRequest(
@@ -106,6 +106,7 @@ public class ApiManager {
         });
         this.queue.add(request);
     }
+*/
 
     public void sendUpdateToHue(HueNetwork network, int id, HueLamp lamp)
     {
@@ -170,7 +171,7 @@ public class ApiManager {
 
                 @Override
                 public void retry(VolleyError error) throws VolleyError {
-                    Log.e("API Mager GetToken", error.getMessage());
+                    Log.e("API Mager GetToken", "" + error.getMessage());
                     error.printStackTrace();
                 }
             });

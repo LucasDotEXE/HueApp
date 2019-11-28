@@ -11,8 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hueapp.Model.CentralVariables;
 import com.example.hueapp.Model.HueLamp;
 import com.example.hueapp.R;
+import com.example.hueapp.View.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class MainActivity_HeuNetworkAdapter extends RecyclerView.Adapter<MainAct
 
         holder.productName.setText(hueLamp.getProductName());
         holder.name.setText(hueLamp.getName());
+
         if (hueLamp.isReachable()) {
             if (hueLamp.isOn()) {
                 Picasso.get()
@@ -81,21 +84,20 @@ public class MainActivity_HeuNetworkAdapter extends RecyclerView.Adapter<MainAct
             this.productName = (TextView) itemView.findViewById(R.id.hueLampItemProductName);
             this.name = (TextView) itemView.findViewById(R.id.hueLampItemName);
             this.imageAvailibility = (ImageView) itemView.findViewById(R.id.hueLampItemImage);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(
+                            v.getContext(),
+                            DetailActivity.class);
+                    Log.i("POSITION", "" + HeuLampViewHolder.super.getAdapterPosition());
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(
-//                            v.getContext(),
-//                            DetailedBlindWallView.class);
-//                    Log.i("POSITION", "" + BlindwallsViewHolder.super.getAdapterPosition());
-//
-//                    BlindWall blindWall = dataset.get(BlindwallsViewHolder.super.getAdapterPosition());
-//                    intent.putExtra("Wall_OBJECT", blindWall);
-//
-//                    v.getContext().startActivity(intent);
-//                }
-//            });
+                    HueLamp hueLamp = dataSet.get(HeuLampViewHolder.super.getAdapterPosition());
+                    intent.putExtra(CentralVariables.HueLamp_Key, hueLamp);
+
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
     }
 

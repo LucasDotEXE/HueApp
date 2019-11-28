@@ -12,7 +12,8 @@
     <com.madrapps.pikolo.HSLColorPicker
         android:id="@+id/colorpicker"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.madrapps.pikolo.HSLColorPicker>
+        android:layout_height="match_parent"
+        ></com.madrapps.pikolo.HSLColorPicker>
 
     <!--<com.madrapps.pikolo.HSLColorPicker-->
     <!--android:id="@+id/colorPicker"-->

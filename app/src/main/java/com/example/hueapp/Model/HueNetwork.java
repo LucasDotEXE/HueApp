@@ -48,7 +48,7 @@ public class HueNetwork implements Parcelable {
         try {
             int i = 1;
             while (true) {
-                lamps.add(new HueLamp(lights.getJSONObject("" + i + "")));
+                lamps.add(new HueLamp(i, lights.getJSONObject("" + i + "")));
                 i++;
             }
         } catch (JSONException e) {

@@ -74,6 +74,13 @@ public class MainActivity extends AppCompatActivity implements ApiListener {
     }*/
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        manager.getAllInfo(selectedNetwork, this);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onError() {
 
     }

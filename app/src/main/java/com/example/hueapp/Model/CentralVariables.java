@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class CentralVariables {
 
     private final static CentralVariables instance = new CentralVariables();
+    public final static String HueLamp_Key = "HueLampObject";
 
     private CentralVariables() {
     }
@@ -15,7 +16,7 @@ public class CentralVariables {
         return instance;
     }
 
-    private HueNetwork network = HueNetworkTestHelper.LucasLocalTestNetwork;
+    private HueNetwork network = new HueNetwork("10.0.2.2");
 
     public HueNetwork getNetwork() {
         return network;
