@@ -77,24 +77,9 @@ public class MainActivity extends AppCompatActivity implements NetworkListener, 
         manager.getAllInfo(selectedNetwork, this);
         adapter.notifyDataSetChanged();
     }
-   /* @Override
-    public void onLampsReturned(JSONArray response) {
-
-        //TODO fix to work with JSONARRAY
-        ArrayList<HueLamp> list = new ArrayList<>();
-        this.network.setHueLamps(list);
-    }*/
 
     @Override
     public void onHueNetworkError() {
-    protected void onResume() {
-        super.onResume();
-        manager.getAllInfo(selectedNetwork, this);
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onError() {
 
         refreshLayout.setRefreshing(false);
     }
