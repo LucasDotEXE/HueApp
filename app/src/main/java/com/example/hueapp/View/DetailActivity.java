@@ -72,13 +72,13 @@ public class DetailActivity extends AppCompatActivity implements HueLampInfoFrag
         lamp.setHue((int)(values[0]* ((float)65536/360)));
         lamp.setBrightness((int)(values[1] * (float)256));
         lamp.setSaturation((int)(values[2] * (float)256));
-        apiManager.sendUpdateToHue(CentralVariables.getInstance().getNetwork(), lamp.getId(), lamp);
+        apiManager.sendUpdateToHue(CentralVariables.getInstance().getSelectedNetwork(), lamp.getId(), lamp);
     }
 
     @Override
     public void OnOnOff() {
         //Log.d("Hue", "lamp is: " + lamp.isOn());
         //lamp.setOn(!lamp.isOn());
-        apiManager.sendUpdateToHue(CentralVariables.getInstance().getNetwork(), lamp.getId(), lamp);
+        apiManager.sendUpdateToHue(CentralVariables.getInstance().getSelectedNetwork(), lamp.getId(), lamp);
     }
 }

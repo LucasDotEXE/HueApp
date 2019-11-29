@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hueapp.Controller.ApiInterface.TestConnectionListener;
 import com.example.hueapp.Controller.ApiInterface.TokenListener;
 import com.example.hueapp.Controller.ApiManager;
 import com.example.hueapp.Model.CentralVariables;
@@ -23,7 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class APIConnectionSettings extends AppCompatActivity implements TokenListener {
+public class APIConnectionSettings extends AppCompatActivity implements TestConnectionListener {
 
     private final TokenListener tokenListener = this;
     private HueNetwork selectedNetwork;
@@ -116,7 +117,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
     }
 
     private void  updateConnection(HueNetwork selectedNetwork) {
-        this.manager.tesConnection(selectedNetwork);
+        this.manager.testConnection(selectedNetwork, this);
     }
 
     private void updateIP(HueNetwork selectedNetwork) {
@@ -152,10 +153,27 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
     @Override
     public void onTokenError() {
         Log.e("API Connection", "Couldnt get token");
+        this.token.setText("This network failed to connect");
     }
 
     @Override
     public void onLinkButtonNotPressed() {
         Toast.makeText(this, "Link Button Wasn't Pressed On HueBridge", Toast.LENGTH_SHORT).show();
+        this.token.setText("This network failed to connect");
+    }
+
+    @Override
+    public void onConnection() {
+        this.token.setText("This network is connected");
+    }
+
+    @Override
+    public void onConnectionError() {
+        this.token.setText("This network failed to connect");
+    }
+
+    @Override
+    public void tokenRefreshed(HueNetwork network) {
+        this.manager.testConnection(network, this);
     }
 }

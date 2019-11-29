@@ -19,8 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Settings"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/networkName"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,31 +29,20 @@
         android:id="@+id/settingIP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="IP: "
-        app:layout_constraintBottom_toTopOf="@+id/token"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/tokenConnected"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/networkName" />
-
-    <TextView
-        android:id="@+id/networkName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="8dp"
-        android:text="Network Name"
-        app:layout_constraintBottom_toTopOf="@+id/settingIP"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settingsTitle" />
 
     <TextView
-        android:id="@+id/token"
+        android:id="@+id/tokenConnected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Token"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settingIP" />
@@ -81,11 +69,12 @@
         android:id="@+id/refreshToken"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:text="Get Token"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/connectToNetworkButton"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/editText"
@@ -105,6 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
@@ -119,4 +109,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_right" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/connectToNetworkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:clickable="true"
+        app:fabSize="auto"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsSpinner"
+        app:maxImageSize="48dp"
+        app:srcCompat="@drawable/re_connect_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

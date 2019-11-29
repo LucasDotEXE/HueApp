@@ -90,8 +90,6 @@ public class NetworkManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
-
-
     }
 
     public void fillDatabase() {
