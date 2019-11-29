@@ -2,12 +2,16 @@ package com.example.hueapp.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class HueLamp implements Parcelable {
+
+    //identification
+    private int id;
 
     //state
     private boolean isOn;
@@ -26,11 +30,11 @@ public class HueLamp implements Parcelable {
     private String manufacturerName;
     private String productName;
 
-    public HueLamp(JSONObject jsonLamp) {
+    public HueLamp(int id, JSONObject jsonLamp) {
         try {
 
-
-
+            //identification
+            this.id = id;
             //state
             JSONObject state = jsonLamp.getJSONObject("state");
             this.isOn = state.getBoolean("on");
@@ -49,11 +53,21 @@ public class HueLamp implements Parcelable {
 //            this.modelId = jsonLamp.getString("modleid");
 //            this.manufacturerName = jsonLamp.getString("manufacturername");
 //            this.productName = jsonLamp.getString("productname");
+            Log.d("Hue", "Lamp created: " + this.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public String toString()
+    {
+        return "ID" + this.id + ", Model: " + this.modelId + ", Hue: " + this.hue + ", Brightness: " + this.brightness + ", Saturation" + this.saturation;
+    }
+    public int getId() {return this.id;}
+
+    public void setId(int id) {this.id = id;}
 
     public boolean isOn() {
         return isOn;
@@ -68,7 +82,12 @@ public class HueLamp implements Parcelable {
     }
 
     public void setBrightness(int brightness) {
-        this.brightness = brightness;
+        if (brightness > 255)
+            this.brightness = 255;
+        else if (brightness < 0)
+            this.brightness = 0;
+        else
+            this.brightness = brightness;
     }
 
     public int getHue() {
@@ -76,7 +95,12 @@ public class HueLamp implements Parcelable {
     }
 
     public void setHue(int hue) {
-        this.hue = hue;
+        if (hue > 65535)
+            this.hue = 65535;
+        else if (hue < 0)
+            this.hue = 0;
+        else
+            this.hue = hue;
     }
 
     public int getSaturation() {
@@ -84,7 +108,12 @@ public class HueLamp implements Parcelable {
     }
 
     public void setSaturation(int saturation) {
-        this.saturation = saturation;
+        if (saturation > 255)
+            this.saturation = 255;
+        else if (saturation < 0)
+            this.saturation = 0;
+        else
+            this.saturation = saturation;
     }
 
     public String getEffect() {
@@ -160,6 +189,7 @@ public class HueLamp implements Parcelable {
     }
 
     protected HueLamp(Parcel in) {
+        id = in.readInt();
         isOn = in.readByte() != 0x00;
         brightness = in.readInt();
         hue = in.readInt();
@@ -182,6 +212,7 @@ public class HueLamp implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeByte((byte) (isOn ? 0x01 : 0x00));
         dest.writeInt(brightness);
         dest.writeInt(hue);
