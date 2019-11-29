@@ -39,7 +39,7 @@ public class HueLamp implements Parcelable {
             JSONObject state = jsonLamp.getJSONObject("state");
             this.isOn = state.getBoolean("on");
             this.brightness = state.getInt("bri");
-            //this.hue = state.getInt("hue");
+            this.hue = state.getInt("hue");
             this.saturation = state.getInt("sat");
             this.effect = state.getString("effect");
             this.reachable = state.getBoolean("reachable");

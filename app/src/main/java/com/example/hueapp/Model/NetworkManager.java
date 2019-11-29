@@ -10,6 +10,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -32,6 +34,7 @@ public class NetworkManager extends SQLiteOpenHelper {
         if (getNetworMap().isEmpty()) {
             fillDatabase();
         }
+        fillDatabase();
     }
 
 
@@ -63,23 +66,20 @@ public class NetworkManager extends SQLiteOpenHelper {
     }
 
     public void appendTokenToIP(String ip, String token) {
-        printDataBase();
        String updateStatement =  "UPDATE " + DB_TABLE_NAME +
                                  " SET " + KEY_TOKEN + "='" + token +
                                  "' WHERE " + KEY_IP + "='" + ip + "';";
        getWritableDatabase().execSQL(updateStatement);
 
-       printDataBase();
-
     }
 
-    private void printDataBase() {
-        HashMap<String, String> data = getNetworMap();
-
-        for (String key : data.keySet()) {
-            Log.e("TestDatabase", key + " <--- IP Token ---> "+ data.get(key));
-        }
-    }
+//    private void printDataBase() {
+//        HashMap<String, String> data = getNetworMap();
+//
+//        for (String key : data.keySet()) {
+//            Log.e("TestDatabase", key + " <--- IP Token ---> "+ data.get(key));
+//        }
+//    }
 
     public void addIpToken(String ip, String token) {
         ContentValues values = new ContentValues();
@@ -88,6 +88,11 @@ public class NetworkManager extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
         db.insert(DB_TABLE_NAME, null, values);
+    }
+
+    public void removeIP(String ip) {
+        String removeCommand =  "DELETE FROM " + DB_TABLE_NAME + " WHERE " + KEY_IP + " = '" + ip +"';";
+        getWritableDatabase().execSQL(removeCommand);
     }
 
     @Override
