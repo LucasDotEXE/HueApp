@@ -13,6 +13,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hueapp.Controller.ApiInterface.NetworkListener;
+import com.example.hueapp.Controller.ApiInterface.TestConnectionListener;
 import com.example.hueapp.Controller.ApiInterface.TokenListener;
 import com.example.hueapp.Model.HueLamp;
 import com.example.hueapp.Model.HueNetwork;
@@ -32,6 +33,9 @@ public class ApiManager {
 
 
     public void getAllInfo(final HueNetwork network, final NetworkListener listener) {
+        if (network.getToken().equals("TOKEN_NOT_FOUNT")) {
+            return;
+        }
         final JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
                 "http://" + network.getIp() +"/api/" + network.getToken(),
@@ -39,7 +43,7 @@ public class ApiManager {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i("APIManagerGetAllInfo()", "Thing received");
+                        Log.i("APIManagerGetAllInfo()", "Network info received");
                         listener.onHueNetworkAvailable(new HueNetwork(network.getIp(), network.getToken(), response));
                     }
                 },
@@ -152,10 +156,9 @@ public class ApiManager {
                         public void onResponse(JSONArray response) {
                             try {
                                 String token = response.getJSONObject(0).getJSONObject("success").getString("username");
-                                network.setToken(token);
                                 listener.onTokenAvailable(token);
                             } catch (JSONException e) {
-                                listener.onTokenError();
+                                listener.onLinkButtonNotPressed();
                             }
                         }
                     },

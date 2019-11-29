@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.drm.DrmStore;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -57,6 +59,25 @@ public class NetworkManager extends SQLiteOpenHelper {
 
     }
 
+    public void appendTokenToIP(String ip, String token) {
+        printDataBase();
+       String updateStatement =  "UPDATE " + DB_TABLE_NAME +
+                                 " SET " + KEY_TOKEN + "='" + token +
+                                 "' WHERE " + KEY_IP + "='" + ip + "';";
+       getWritableDatabase().execSQL(updateStatement);
+
+       printDataBase();
+
+    }
+
+    private void printDataBase() {
+        HashMap<String, String> data = getNetworMap();
+
+        for (String key : data.keySet()) {
+            Log.e("TestDatabase", key + " <--- IP Token ---> "+ data.get(key));
+        }
+    }
+
     public void addIpToken(String ip, String token) {
         ContentValues values = new ContentValues();
         values.put(KEY_IP, ip);
@@ -69,8 +90,17 @@ public class NetworkManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
-        addIpToken("145.48.205.33", "iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB");
-        //addIpToken("", "");
+
+
+    }
+
+    public void fillDatabase() {
+        addIpToken("145.48.205.33", "iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB"); //beneden
+        addIpToken("145.49.38.213", "TOKEN_NOT_FOUNT");// Lucas
+        addIpToken("145.49.15.52", "TOKEN_NOT_FOUNT"); //Sebastiaan
+//      134 network  MAD2016TI
+        addIpToken("192.168.1.179", "zzzMr8hp0ikDLnj-giTMF7z6Q6fai38lYGOpkEJE"); //actual
+        addIpToken("192.168.1.191", "TOKEN_NOT_FOUNT"); //emulator
     }
 
     @Override

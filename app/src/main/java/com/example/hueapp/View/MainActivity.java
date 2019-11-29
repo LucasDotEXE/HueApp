@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity implements NetworkListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private HueNetwork selectedNetwork;
+
     private MainActivity_HeuNetworkAdapter adapter;
     private ApiManager manager;
 
@@ -34,22 +32,19 @@ public class MainActivity extends AppCompatActivity implements NetworkListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.selectedNetwork = CentralVariables.getInstance().getNetwork();
+        CentralVariables.getInstance().getSelectedNetwork();
         
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CentralVariables.getInstance().setNetwork(selectedNetwork);
                 Intent intent = new Intent(
                         v.getContext(), APIConnectionSettings.class);
-                        intent.putExtra("SelectedNetwork", selectedNetwork);
                         v.getContext().startActivity(intent);
             }
         });
 
         this.manager = new ApiManager(this);
-        manager.getAllInfo(selectedNetwork, this);
 
         this.recyclerView = findViewById(R.id.mainRecyclerview);
         this.refreshLayout = findViewById(R.id.refreshContainer);
@@ -60,21 +55,21 @@ public class MainActivity extends AppCompatActivity implements NetworkListener, 
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(
+        this.recyclerView.setLayoutManager(new GridLayoutManager(
                 this,1,GridLayoutManager.VERTICAL, false
         ));
 
-        this.adapter = new MainActivity_HeuNetworkAdapter(selectedNetwork.getHueLamps());
-        recyclerView.setAdapter(adapter);
+        this.adapter = new MainActivity_HeuNetworkAdapter(CentralVariables.getInstance().getSelectedNetwork().getHueLamps());
+        this.recyclerView.setAdapter(adapter);
 
-        manager.getAllInfo(selectedNetwork, this);
-        adapter.notifyDataSetChanged();
+//        manager.getAllInfo(selectedNetwork, this);
+//        adapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        manager.getAllInfo(selectedNetwork, this);
+        manager.getAllInfo(CentralVariables.getInstance().getSelectedNetwork(), this);
         adapter.notifyDataSetChanged();
     }
    /* @Override
@@ -93,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NetworkListener, 
 
     @Override
     public void onHueNetworkAvailable(HueNetwork network) {
-        this.selectedNetwork = network;
+        CentralVariables.getInstance().setSelectedNetwork(network);
         adapter.setDataSet(network.getHueLamps());
         adapter.notifyDataSetChanged();
         refreshLayout.setRefreshing(false);
@@ -103,6 +98,6 @@ public class MainActivity extends AppCompatActivity implements NetworkListener, 
     public void onRefresh() {
 
         refreshLayout.setRefreshing(true);
-        manager.getAllInfo(selectedNetwork, this);
+        manager.getAllInfo(CentralVariables.getInstance().getSelectedNetwork(), this);
     }
 }

@@ -13,6 +13,10 @@ public class BridgeConfig implements Parcelable {
     private String timeZone;
     private String apiVersion;
 
+    public BridgeConfig(String name) {
+        this.name = name;
+    }
+
     public BridgeConfig (JSONObject jsonConfig) {
         try {
             this.name = jsonConfig.getString("name");
@@ -21,6 +25,9 @@ public class BridgeConfig implements Parcelable {
 //            this.timeZone = jsonConfig.getString("timezone");
 //            this.apiVersion = jsonConfig.getString("apiversion");
 
+            if (this.name == null) {
+                this.name = "Name Not Found";
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -52,6 +59,10 @@ public class BridgeConfig implements Parcelable {
         localTime = in.readString();
         timeZone = in.readString();
         apiVersion = in.readString();
+
+        if (this.name == null) {
+            this.name = "Name Not Found";
+        }
     }
 
     @Override

@@ -17,29 +17,30 @@ import com.example.hueapp.Controller.ApiInterface.TokenListener;
 import com.example.hueapp.Controller.ApiManager;
 import com.example.hueapp.Model.CentralVariables;
 import com.example.hueapp.Model.HueNetwork;
+import com.example.hueapp.Model.NetworkManager;
 import com.example.hueapp.R;
-import com.example.hueapp.TestingHelpers.HueNetworkTestHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class APIConnectionSettings extends AppCompatActivity implements TokenListener {
 
     private final TokenListener tokenListener = this;
     private HueNetwork selectedNetwork;
+    private NetworkManager networkManager;
+    private ArrayList<HueNetwork> networks;
 
     private TextView ip;
     private TextView token;
 
     private Button tokenButton;
     private FloatingActionButton backButton;
+    private FloatingActionButton connectButton;
     private Spinner spinner;
 
     private ApiManager manager;
 
-    private ArrayList<HueNetwork> networks;
+//    private ArrayList<HueNetwork> networks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,30 +49,31 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
 
 
         ip = findViewById(R.id.settingIP);
-        token = findViewById(R.id.token);
+        token = findViewById(R.id.tokenConnected);
 
         tokenButton = findViewById(R.id.refreshToken);
         backButton = findViewById(R.id.settingsBackButton);
         spinner = findViewById(R.id.settingsSpinner);
 
         // TODO: 11/22/2019 add database instead of array;
-        networks = new ArrayList<>();
-        networks.add(new HueNetwork("145.48.205.33", "iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB"));
-        networks.add(HueNetworkTestHelper.LucasLocalTextNetworkEmpty);
-        networks.add(new HueNetwork("145.49.15.52"));
-        networks.add(new HueNetwork("192.168.1.179", "zzzMr8hp0ikDLnj-giTMF7z6Q6fai38lYGOpkEJE"));
-        networks.add(new HueNetwork("192.168.1.191"));
+
+        this.networkManager = new NetworkManager(this);
+        //networkManager.fillDatabase();
+        this.networks = new ArrayList<>();
+        for (String IP : this.networkManager.getNetworMap().keySet()) {
+            this.networks.add(new HueNetwork(IP, networkManager.getNetworMap().get(IP)));
+        }
         //==========================================================
 
-        ArrayAdapter<HueNetwork> adapter = new ArrayAdapter<HueNetwork>(this,
-                android.R.layout.simple_spinner_item, networks);
+        ArrayAdapter<HueNetwork> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, this.networks);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 HueNetwork hueNetwork = (HueNetwork) parent.getSelectedItem();
-                CentralVariables.getInstance().setNetwork(hueNetwork);
+                CentralVariables.getInstance().setSelectedNetwork(hueNetwork);
                 //displayUserData(hueNetwork);
                 updateUiInfo();
             }
@@ -82,7 +84,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
             }
         });
 
-        selectedNetwork = CentralVariables.getInstance().getNetwork();
+        selectedNetwork = CentralVariables.getInstance().getSelectedNetwork();
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,8 +109,19 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
     }
 
     private void updateUiInfo() {
-        ip.setText("IP: " + CentralVariables.getInstance().getNetwork().getIp());
-        token.setText("Token: " + CentralVariables.getInstance().getNetwork().getToken());
+        HueNetwork selectedNetwork = getSelectedHueNetwork();
+        updateIP(selectedNetwork);
+        updateConnection(selectedNetwork);
+
+    }
+
+    private void  updateConnection(HueNetwork selectedNetwork) {
+        this.manager.tesConnection(selectedNetwork);
+    }
+
+    private void updateIP(HueNetwork selectedNetwork) {
+        String ipText = "IP: " + selectedNetwork.getIp();
+        ip.setText(ipText);
     }
 
     private HueNetwork getSelectedHueNetwork() {
@@ -116,30 +129,33 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
     }
 
     private void setSelectedNetwork() {
-        for (HueNetwork network : networks) {
+        for (HueNetwork network : this.networks) {
             if (network.getIp().equals(
-                    CentralVariables.getInstance().getNetwork().getIp()
+                    CentralVariables.getInstance().getSelectedNetwork().getIp()
             )) {
-                spinner.setSelection(networks.indexOf(network), true);
+                spinner.setSelection(this.networks.indexOf(network), true);
+            } else {
+                //Log.e("Test", network.getIp() + "<---Checking  Selected--->" + CentralVariables.getInstance().getSelectedNetwork().getIp());
             }
         }
-    }
-
-    private void displayUserData(HueNetwork user) {
-        String ip = user.getIp();
-        String token = user.getToken();
-        String userData = "IP: " + ip + "\nToken: " + token;
-        Toast.makeText(this, userData, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onTokenAvailable(String token) {
         Log.i("API Connection", "Token: " + token);
+        getSelectedHueNetwork().setToken(token);
+        this.networkManager.appendTokenToIP(getSelectedHueNetwork().getIp(), token);
+
         updateUiInfo();
     }
 
     @Override
     public void onTokenError() {
         Log.e("API Connection", "Couldnt get token");
+    }
+
+    @Override
+    public void onLinkButtonNotPressed() {
+        Toast.makeText(this, "Link Button Wasn't Pressed On HueBridge", Toast.LENGTH_SHORT).show();
     }
 }
