@@ -39,7 +39,7 @@ public class MainActivity_HeuNetworkAdapter extends RecyclerView.Adapter<MainAct
     @Override
     public HeuLampViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.heu_lamp_resyclerview_list_item, parent, false);
+        View view = inflater.inflate(R.layout.hue_lamp_recyclerview_list_item, parent, false);
         return new HeuLampViewHolder(view);
     }
 
@@ -82,9 +82,9 @@ public class MainActivity_HeuNetworkAdapter extends RecyclerView.Adapter<MainAct
 
         public HeuLampViewHolder(View itemView) {
             super(itemView);
-            this.productName = (TextView) itemView.findViewById(R.id.hueLampItemProductName);
-            this.name = (TextView) itemView.findViewById(R.id.hueLampItemName);
-            this.imageAvailibility = (ImageView) itemView.findViewById(R.id.hueLampItemImage);
+            this.productName = itemView.findViewById(R.id.hueLampItemProductName);
+            this.name = itemView.findViewById(R.id.hueLampItemName);
+            this.imageAvailibility = itemView.findViewById(R.id.hueLampItemImage);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -1,7 +1,6 @@
-package com.example.hueapp;
+package com.example.hueapp.View;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -14,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.hueapp.Model.CentralVariables;
 import com.example.hueapp.Model.HueLamp;
-import com.example.hueapp.Model.JavaColor;
+import com.example.hueapp.R;
 import com.madrapps.pikolo.ColorPicker;
 import com.madrapps.pikolo.listeners.SimpleColorSelectionListener;
 

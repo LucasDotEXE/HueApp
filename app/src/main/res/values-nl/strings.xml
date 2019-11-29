@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">HueApp</string>
+    <string name="delete_IP">Verwijder IP</string>
+    <string name="add_IP">Voeg IP toe</string>
+    <string name="settings">Instellingen</string>
+    <string name="token">Token</string>
+    <string name="warning_delete_IP">Weet je zeker dat je dit IP wilt verwijderen? </string>
+    <string name="warning_failed_connect">Met dit netwerk kon niet verbonden worden</string>
+    <string name="warning_huebridge_link">Kon geen link met Hue systeem maken</string>
+    <string name="connected_network">Dit netwerk is verbonden</string>
+    <string name="warning_IP_not_found">Kan Hue systeem niet vinden</string>
+    <string name="warning_IPmin_1">Je mag niet alle IP adressen verwijderen</string>
+    <string name="warning_link_not_pressed">"Druk op de Link knop en probeer opnieuw"</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
+    <string name="cancel">Annuleer</string>
+</resources>

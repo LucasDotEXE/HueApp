@@ -11,31 +11,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
+        app:layout_constraintGuide_percent="0.4" />
 
     <TextView
         android:id="@+id/settingsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/settings"
         android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/tokenConnected"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/settingIP" />
 
     <TextView
         android:id="@+id/settingIP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:text="IP: "
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/tokenConnected"
+        app:layout_constraintBottom_toTopOf="@+id/settingsTitle"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingsTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tokenConnected"
@@ -43,16 +43,18 @@
         android:layout_height="wrap_content"
         android:text="@string/token"
         android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingIP" />
+        app:layout_constraintTop_toBottomOf="@+id/settingsTitle" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.80" />
 
     <Button
         android:id="@+id/ipAddButton"
@@ -110,7 +112,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingsSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/deleteIPButton"
         app:maxImageSize="48dp"
         app:srcCompat="@drawable/re_connect_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

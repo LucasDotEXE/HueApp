@@ -1,9 +1,7 @@
-package com.example.hueapp;
+package com.example.hueapp.View;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,14 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.hueapp.Model.CentralVariables;
 import com.example.hueapp.Model.HueLamp;
-import com.example.hueapp.View.APIConnectionSettings;
+import com.example.hueapp.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
@@ -64,7 +59,7 @@ public class HueLampInfoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             hueLamp = getArguments().getParcelable(CentralVariables.HueLamp_Key);
-            Log.d("Hue", "HueInfo received args. Hue:  " +   String.valueOf(hueLamp.getHue()));
+            Log.d("Hue", "HueInfo received args. Hue:  " + hueLamp.getHue());
 
         }
 
@@ -94,7 +89,7 @@ public class HueLampInfoFragment extends Fragment {
         });
 
         if(this.hueLamp != null) {
-            lampID.setText(String.valueOf("Lamp " + hueLamp.getId()));
+            lampID.setText("Lamp " + hueLamp.getId());
             //lampID.setText("test2");
             //buttononoff.setText(hueLamp.isOn());
             Log.d("Hue", String.valueOf(hueLamp.getBrightness()));

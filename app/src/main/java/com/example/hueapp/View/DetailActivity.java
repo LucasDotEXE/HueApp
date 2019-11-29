@@ -7,16 +7,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.hueapp.ColorPickerFragment;
 import com.example.hueapp.Controller.ApiManager;
-import com.example.hueapp.HueLampInfoFragment;
 import com.example.hueapp.Model.CentralVariables;
 import com.example.hueapp.Model.HueLamp;
-import com.example.hueapp.Model.HueNetwork;
 import com.example.hueapp.R;
 
 public class DetailActivity extends AppCompatActivity implements HueLampInfoFragment.OnFragmentInteractionListener, ColorPickerFragment.OnColorPickerFragmentInteractionListener {
@@ -29,7 +24,8 @@ public class DetailActivity extends AppCompatActivity implements HueLampInfoFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        this.apiManager = new ApiManager(this);
+
+        this.apiManager = ApiManager.getInstance(this);
         lamp =  this.getIntent().getParcelableExtra(CentralVariables.HueLamp_Key);
 
 
@@ -64,18 +60,12 @@ public class DetailActivity extends AppCompatActivity implements HueLampInfoFrag
     public void onColorSelect(int color) {
         //Log.d("Hue", "onColorSelect called " + color);
         float[] values = new float[3];
-
         int maskedColor = color & 0xffffffff; //prefix opacity to 100%
-        //Color.colorToHSV(maskedColor, values);
-        //Color.RGBToHSV((color >> 16) & 0xff, (color >> 8) & 0xff, (color) & 0xff, values);
-        //Log.d("Hue", "Translated: "+  (values[0]) + ", " + (values[1]) + ", " + (values[2]));
-        //Log.d("Hue", "R " + Color.red(color) + " G " + Color.green(color) + " B " + Color.blue(color) );
+        //Color.colorToHSV(maskedColor, values);         //Color.RGBToHSV((color >> 16) & 0xff, (color >> 8) & 0xff, (color) & 0xff, values);//Log.d("Hue", "Translated: "+  (values[0]) + ", " + (values[1]) + ", " + (values[2]));//Log.d("Hue", "R " + Color.red(color) + " G " + Color.green(color) + " B " + Color.blue(color) );
         Color.RGBToHSV(Color.red(maskedColor), Color.green(maskedColor), Color.blue(maskedColor), values);
-        //Log.d("Hue", "Translated: "+  (values[0]) + ", " + (values[1]) + ", " + (values[2]));
-        //lamp.setColor(color);
+        //Log.d("Hue", "Translated: "+  (values[0]) + ", " + (values[1]) + ", " + (values[2]));//lamp.setColor(color);
         lamp.setHue((int)(values[0]* ((float)65536/360)));
-        Log.d("Hue", "Hue set to " + lamp.getHue());
-        lamp.setBrightness((int)(values[1] * (float)256));
+        lamp.setBrightness(((int)(values[1] * (float)256)));
         lamp.setSaturation((int)(values[2] * (float)256));
         apiManager.sendUpdateToHue(CentralVariables.getInstance().getSelectedNetwork(), lamp.getId(), lamp);
     }

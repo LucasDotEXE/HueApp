@@ -54,11 +54,11 @@ public class APIConnectionSettings extends AppCompatActivity implements TestConn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apiconnection_settings);
 
+
         ip = findViewById(R.id.settingIP);
         token = findViewById(R.id.tokenConnected);
-
-        connectButton = findViewById(R.id.connectToNetworkButton);
         deleteIPButton = findViewById(R.id.deleteIPButton);
+        connectButton = findViewById(R.id.connectToNetworkButton);
 
         spinner = findViewById(R.id.settingsSpinner);
 
@@ -121,7 +121,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TestConn
                 if (networks.size() > 1) {
                     areYouSureYouWantToDelete();
                 } else {
-                    Toast.makeText(context, "Can't Delete All IP's", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.warning_IPmin_1, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -129,7 +129,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TestConn
 
 
 
-        manager = new ApiManager(this);
+        manager = ApiManager.getInstance(this);
         //manager.getNetworkToken(selectedNetwork, this);
         setSelectedNetwork();
     }
@@ -137,9 +137,9 @@ public class APIConnectionSettings extends AppCompatActivity implements TestConn
     private void areYouSureYouWantToDelete() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setMessage("Are You sure You Want To Delete: " + getSelectedHueNetwork().getIp())
+        builder.setMessage(R.string.warning_delete_IP + " " + getSelectedHueNetwork().getIp())
                 .setCancelable(true)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         HueNetwork network = getSelectedHueNetwork();
@@ -149,7 +149,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TestConn
                         adapter.notifyDataSetChanged();
                     }
                 })
-        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -203,23 +203,23 @@ public class APIConnectionSettings extends AppCompatActivity implements TestConn
     @Override
     public void onTokenError() {
         Log.e("API Connection", "Couldnt get token");
-        this.token.setText("This network failed to connect");
+        this.token.setText(R.string.warning_failed_connect);
     }
 
     @Override
     public void onLinkButtonNotPressed() {
-        Toast.makeText(this, "Press Link Button & Try Again", Toast.LENGTH_LONG).show();
-        this.token.setText("Couldn't Link to the HueBridge");
+        Toast.makeText(this, R.string.warning_link_not_pressed, Toast.LENGTH_LONG).show();
+        this.token.setText(R.string.warning_huebridge_link);
     }
 
     @Override
     public void onConnection() {
-        this.token.setText("This network is connected");
+        this.token.setText(R.string.connected_network);
     }
 
     @Override
     public void onConnectionError() {
-        Toast.makeText(this, "Couldn't find the HueBridge IP", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.warning_IP_not_found, Toast.LENGTH_SHORT).show();
         this.token.setText("Unknown IP");
     }
 

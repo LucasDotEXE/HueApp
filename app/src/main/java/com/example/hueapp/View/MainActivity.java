@@ -30,45 +30,52 @@ public class MainActivity extends AppCompatActivity implements NetworkListener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
 
-        CentralVariables.getInstance().getSelectedNetwork();
-        
+        getAPIManager();
+
+
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(
                         v.getContext(), APIConnectionSettings.class);
-                        v.getContext().startActivity(intent);
+                v.getContext().startActivity(intent);
             }
         });
 
-        this.manager = new ApiManager(this);
-
         this.recyclerView = findViewById(R.id.mainRecyclerview);
         this.refreshLayout = findViewById(R.id.refreshContainer);
-
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setColorSchemeResources(R.color.colorPrimary,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
-
         this.recyclerView.setLayoutManager(new GridLayoutManager(
-                this,1,GridLayoutManager.VERTICAL, false
+                this, 1, GridLayoutManager.VERTICAL, false
         ));
-
         this.adapter = new MainActivity_HeuNetworkAdapter(CentralVariables.getInstance().getSelectedNetwork().getHueLamps());
         this.recyclerView.setAdapter(adapter);
 
-//        manager.getAllInfo(selectedNetwork, this);
-//        adapter.notifyDataSetChanged();
+        HueNetwork selectedNetwork = CentralVariables.getInstance().getSelectedNetwork();
+        manager.getAllInfo(selectedNetwork, this);
+        adapter.notifyDataSetChanged();
+
+    }
+
+
+    private void getAPIManager()
+    {
+        this.manager = ApiManager.getInstance(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        getAPIManager();
         manager.getAllInfo(CentralVariables.getInstance().getSelectedNetwork(), this);
         adapter.notifyDataSetChanged();
     }

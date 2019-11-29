@@ -103,7 +103,7 @@ public class NetworkManager extends SQLiteOpenHelper {
     public void fillDatabase() {
         addIpToken("145.48.205.33", "iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB"); //beneden
         addIpToken("145.49.38.213", "TOKEN_NOT_FOUNT");// Lucas
-        addIpToken("145.49.15.52", "TOKEN_NOT_FOUNT"); //Sebastiaan
+        addIpToken("10.0.2.2", "TOKEN_NOT_FOUNT"); //Sebastiaan
 //      134 network  MAD2016TI
         addIpToken("192.168.1.179", "zzzMr8hp0ikDLnj-giTMF7z6Q6fai38lYGOpkEJE"); //actual
         addIpToken("192.168.1.191", "TOKEN_NOT_FOUNT"); //emulator

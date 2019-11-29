@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">HueApp</string>
+    <string name="delete_IP">Delete IP</string>
+    <string name="add_IP">Add IP</string>
+    <string name="settings">Settings</string>
+    <string name="token">Token</string>
+    <string name="warning_delete_IP">Are you sure you want to delete:</string>
+    <string name="warning_failed_connect">This network failed to connect</string>
+    <string name="warning_huebridge_link">Could not link to the Hue System</string>
+    <string name="connected_network">This network is connected</string>
+    <string name="warning_IP_not_found">Could not find Hue System</string>
+    <string name="warning_IPmin_1">Cannot delete all known IP Adresses</string>
+    <string name="warning_link_not_pressed">"Press Link button and try again"</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+
 </resources>
