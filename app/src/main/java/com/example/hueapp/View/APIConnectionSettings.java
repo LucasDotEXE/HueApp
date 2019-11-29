@@ -54,6 +54,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TestConn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apiconnection_settings);
 
+
         ip = findViewById(R.id.settingIP);
         token = findViewById(R.id.tokenConnected);
         deleteIPButton = findViewById(R.id.deleteIPButton);
@@ -128,7 +129,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TestConn
 
 
 
-        manager = new ApiManager(this);
+        manager = ApiManager.getInstance(this);
         //manager.getNetworkToken(selectedNetwork, this);
         setSelectedNetwork();
     }

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#00FFFFFF"
     android:backgroundTint="#00FDFDFD"
-    tools:context="com.example.hueapp.ColorPickerFragment">
+    tools:context="com.example.hueapp.View.ColorPickerFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

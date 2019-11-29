@@ -25,10 +25,17 @@ import org.json.JSONObject;
 public class ApiManager {
 
     RequestQueue queue;
+    private static ApiManager apiManager;
 
-
-    public ApiManager(Context context) {
+    private ApiManager(Context context) {
         this.queue = Volley.newRequestQueue(context);
+    }
+
+    public static ApiManager getInstance(Context context)
+    {
+        if (apiManager==null)
+            apiManager = new ApiManager(context);
+        return apiManager;
     }
 
 
