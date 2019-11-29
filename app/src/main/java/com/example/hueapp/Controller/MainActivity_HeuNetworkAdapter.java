@@ -49,7 +49,8 @@ public class MainActivity_HeuNetworkAdapter extends RecyclerView.Adapter<MainAct
 
         holder.productName.setText(hueLamp.getProductName());
         holder.name.setText(hueLamp.getName());
-
+        holder.itemView.setBackgroundColor(hueLamp.getColor());
+        Log.d("Hue", "Background set to " + hueLamp.getColor());
         if (hueLamp.isReachable()) {
             if (hueLamp.isOn()) {
                 Picasso.get()

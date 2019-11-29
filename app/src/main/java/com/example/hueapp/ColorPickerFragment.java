@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.hueapp.Model.CentralVariables;
+import com.example.hueapp.Model.HueLamp;
+import com.example.hueapp.Model.JavaColor;
 import com.madrapps.pikolo.ColorPicker;
 import com.madrapps.pikolo.listeners.SimpleColorSelectionListener;
 
@@ -20,6 +23,8 @@ import com.madrapps.pikolo.listeners.SimpleColorSelectionListener;
 public class ColorPickerFragment extends Fragment {
     private ColorPicker colorPicker;
     private OnColorPickerFragmentInteractionListener mListener;
+    private HueLamp hueLamp;
+
 
     public ColorPickerFragment() {
         // Required empty public constructor
@@ -37,6 +42,7 @@ public class ColorPickerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            hueLamp = getArguments().getParcelable(CentralVariables.HueLamp_Key);
             Log.d("Hue", "Colorpicker received args");
         }
 
@@ -71,6 +77,8 @@ public class ColorPickerFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         colorPicker = getView().findViewById(R.id.colorpicker);
+        if (this.hueLamp != null)
+            colorPicker.setColor(hueLamp.getColor());
         colorPicker.setColorSelectionListener(new SimpleColorSelectionListener() {
             @Override
             public void onColorSelected(int color) {

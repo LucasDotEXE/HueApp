@@ -1,5 +1,6 @@
 package com.example.hueapp.Model;
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -39,7 +40,7 @@ public class HueLamp implements Parcelable {
             JSONObject state = jsonLamp.getJSONObject("state");
             this.isOn = state.getBoolean("on");
             this.brightness = state.getInt("bri");
-            //this.hue = state.getInt("hue");
+            this.hue = state.getInt("hue");
             this.saturation = state.getInt("sat");
             this.effect = state.getString("effect");
             this.reachable = state.getBoolean("reachable");
@@ -82,8 +83,8 @@ public class HueLamp implements Parcelable {
     }
 
     public void setBrightness(int brightness) {
-        if (brightness > 255)
-            this.brightness = 255;
+        if (brightness >= 254)
+            this.brightness = 254;
         else if (brightness < 0)
             this.brightness = 0;
         else
@@ -240,4 +241,10 @@ public class HueLamp implements Parcelable {
             return new HueLamp[size];
         }
     };
+
+
+    public int getColor()
+    {
+                return JavaColor.HSBtoRGB((float)hue/ (float)65536 ,(float)saturation/ 256,(float)brightness / 256);
+    }
 }
