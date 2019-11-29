@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:pikolo="http://schemas.android.com/apk/res-auto"
     android:background="#00FFFFFF"
     android:backgroundTint="#00FDFDFD"
     tools:context="com.example.hueapp.View.ColorPickerFragment">
@@ -13,6 +14,7 @@
         android:id="@+id/colorpicker"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         ></com.madrapps.pikolo.HSLColorPicker>
 
     <!--<com.madrapps.pikolo.HSLColorPicker-->

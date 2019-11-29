@@ -30,11 +30,12 @@ public class MainActivity extends AppCompatActivity implements NetworkListener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
 
         getAPIManager();
 
-        CentralVariables.getInstance().getSelectedNetwork();
 
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +60,9 @@ public class MainActivity extends AppCompatActivity implements NetworkListener, 
         this.adapter = new MainActivity_HeuNetworkAdapter(CentralVariables.getInstance().getSelectedNetwork().getHueLamps());
         this.recyclerView.setAdapter(adapter);
 
-//        manager.getAllInfo(selectedNetwork, this);
-//        adapter.notifyDataSetChanged();
+        HueNetwork selectedNetwork = CentralVariables.getInstance().getSelectedNetwork();
+        manager.getAllInfo(selectedNetwork, this);
+        adapter.notifyDataSetChanged();
 
     }
 

@@ -8,10 +8,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.hueapp.Controller.ApiManager;
-import com.example.hueapp.HueLampInfoFragment;
 import com.example.hueapp.Model.CentralVariables;
 import com.example.hueapp.Model.HueLamp;
 import com.example.hueapp.R;
@@ -67,7 +65,7 @@ public class DetailActivity extends AppCompatActivity implements HueLampInfoFrag
         Color.RGBToHSV(Color.red(maskedColor), Color.green(maskedColor), Color.blue(maskedColor), values);
         //Log.d("Hue", "Translated: "+  (values[0]) + ", " + (values[1]) + ", " + (values[2]));//lamp.setColor(color);
         lamp.setHue((int)(values[0]* ((float)65536/360)));
-        lamp.setBrightness((int)(values[1] * (float)256));
+        lamp.setBrightness(((int)(values[1] * (float)256)));
         lamp.setSaturation((int)(values[2] * (float)256));
         apiManager.sendUpdateToHue(CentralVariables.getInstance().getSelectedNetwork(), lamp.getId(), lamp);
     }
