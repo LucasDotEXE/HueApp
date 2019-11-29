@@ -29,6 +29,9 @@ public class NetworkManager extends SQLiteOpenHelper {
 
     public NetworkManager(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        if (getNetworMap().isEmpty()) {
+            fillDatabase();
+        }
     }
 
 
