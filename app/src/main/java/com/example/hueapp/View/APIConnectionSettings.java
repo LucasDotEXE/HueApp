@@ -1,7 +1,9 @@
 package com.example.hueapp.View;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hueapp.Controller.ApiInterface.TestConnectionListener;
 import com.example.hueapp.Controller.ApiInterface.TokenListener;
 import com.example.hueapp.Controller.ApiManager;
 import com.example.hueapp.Model.CentralVariables;
@@ -24,22 +27,25 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class APIConnectionSettings extends AppCompatActivity implements TokenListener {
+public class APIConnectionSettings extends AppCompatActivity implements TestConnectionListener {
 
     private final TokenListener tokenListener = this;
+    private final APIConnectionSettings context = this;
+
     private HueNetwork selectedNetwork;
     private NetworkManager networkManager;
     private ArrayList<HueNetwork> networks;
+    private ApiManager manager;
 
     private TextView ip;
     private TextView token;
 
-    private Button tokenButton;
-    private FloatingActionButton backButton;
     private FloatingActionButton connectButton;
+    private Button deleteIPButton;
     private Spinner spinner;
 
-    private ApiManager manager;
+    private ArrayAdapter<HueNetwork> adapter;
+
 
 //    private ArrayList<HueNetwork> networks;
 
@@ -48,12 +54,12 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apiconnection_settings);
 
-
         ip = findViewById(R.id.settingIP);
         token = findViewById(R.id.tokenConnected);
 
-        tokenButton = findViewById(R.id.refreshToken);
-        backButton = findViewById(R.id.settingsBackButton);
+        connectButton = findViewById(R.id.connectToNetworkButton);
+        deleteIPButton = findViewById(R.id.deleteIPButton);
+
         spinner = findViewById(R.id.settingsSpinner);
 
         // TODO: 11/22/2019 add database instead of array;
@@ -66,7 +72,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
         }
         //==========================================================
 
-        ArrayAdapter<HueNetwork> adapter = new ArrayAdapter<>(this,
+        adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, this.networks);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -85,17 +91,14 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
             }
         });
 
-        selectedNetwork = CentralVariables.getInstance().getSelectedNetwork();
-
-        backButton.setOnClickListener(new View.OnClickListener() {
+        connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(
-                  v.getContext(), MainActivity.class);
-//                intent.putExtra("SelectedNetwork", selectedNetwork);
-                v.getContext().startActivity(intent);
+                updateUiInfo();
             }
         });
+
+        selectedNetwork = CentralVariables.getInstance().getSelectedNetwork();
 
         Button ipAddButton = findViewById(R.id.ipAddButton);
         final EditText editText = findViewById(R.id.editText);
@@ -105,22 +108,55 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
             public void onClick(View v) {
                 String ipAdress = editText.getText().toString();
                 //Todo: Check string for IP Adress format
+                networkManager.addIP(ipAdress);
                 HueNetwork network = new HueNetwork(ipAdress);
                 networks.add(network);
                 //CentralVariables.getInstance().setNetwork(network);
                 adapter.notifyDataSetChanged();
             }});
 
-        tokenButton.setOnClickListener(new View.OnClickListener() {
+        deleteIPButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                manager.getNetworkToken(selectedNetwork, tokenListener);
+                if (networks.size() > 1) {
+                    areYouSureYouWantToDelete();
+                } else {
+                    Toast.makeText(context, "Can't Delete All IP's", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+
+
 
         manager = new ApiManager(this);
         //manager.getNetworkToken(selectedNetwork, this);
         setSelectedNetwork();
+    }
+
+    private void areYouSureYouWantToDelete() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Are You sure You Want To Delete: " + getSelectedHueNetwork().getIp())
+                .setCancelable(true)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        HueNetwork network = getSelectedHueNetwork();
+                        spinner.setSelection(0);
+                        networks.remove(network);
+                        networkManager.removeIP(network.getIp());
+                        adapter.notifyDataSetChanged();
+                    }
+                })
+        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void updateUiInfo() {
@@ -131,7 +167,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
     }
 
     private void  updateConnection(HueNetwork selectedNetwork) {
-        this.manager.tesConnection(selectedNetwork);
+        this.manager.testConnection(selectedNetwork, this);
     }
 
     private void updateIP(HueNetwork selectedNetwork) {
@@ -167,10 +203,28 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
     @Override
     public void onTokenError() {
         Log.e("API Connection", "Couldnt get token");
+        this.token.setText("This network failed to connect");
     }
 
     @Override
     public void onLinkButtonNotPressed() {
-        Toast.makeText(this, "Link Button Wasn't Pressed On HueBridge", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Press Link Button & Try Again", Toast.LENGTH_LONG).show();
+        this.token.setText("Couldn't Link to the HueBridge");
+    }
+
+    @Override
+    public void onConnection() {
+        this.token.setText("This network is connected");
+    }
+
+    @Override
+    public void onConnectionError() {
+        Toast.makeText(this, "Couldn't find the HueBridge IP", Toast.LENGTH_SHORT).show();
+        this.token.setText("Unknown IP");
+    }
+
+    @Override
+    public void tokenRefreshed(HueNetwork network) {
+        this.manager.testConnection(network, this);
     }
 }

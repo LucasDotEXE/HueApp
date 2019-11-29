@@ -29,7 +29,7 @@ public class CentralVariables {
         return instance;
     }
 
-    private HueNetwork network = new HueNetwork("10.0.2.2");
+    private HueNetwork selectedNetwork = new HueNetwork("10.0.2.2");
 
     public HueNetwork getSelectedNetwork() {
         return selectedNetwork;

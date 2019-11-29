@@ -69,7 +69,7 @@ public class ApiManager {
 
             @Override
             public int getCurrentRetryCount() {
-                return 50000;
+                return 5;
             }
 
             @Override
@@ -179,6 +179,102 @@ public class ApiManager {
                 @Override
                 public int getCurrentRetryCount() {
                     return 5000;
+                }
+
+                @Override
+                public void retry(VolleyError error) throws VolleyError {
+                    Log.e("API Mager GetToken", "" + error.getMessage());
+                    error.printStackTrace();
+                }
+            });
+            this.queue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void testConnection(final HueNetwork network, final TestConnectionListener listener) {
+        if (network.getToken().equals("TOKEN_NOT_FOUNT")) {
+            refreshNetworkToken(network, listener);
+        } else {
+            final JsonObjectRequest request = new JsonObjectRequest(
+                    Request.Method.GET,
+                    "http://" + network.getIp() +"/api/" + network.getToken(),
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            listener.onConnection();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error.getMessage().contains("unauthorized user")) {
+                                refreshNetworkToken(network, listener);
+                            } else {
+                                Log.e("ApiManager getAllInfo", error.getMessage());
+                                listener.onConnectionError();
+                            }
+                        }
+                    }
+            );
+            request.setRetryPolicy(new RetryPolicy() {
+                @Override
+                public int getCurrentTimeout() {
+                    return 50000;
+                }
+
+                @Override
+                public int getCurrentRetryCount() {
+                    return 50000;
+                }
+
+                @Override
+                public void retry(VolleyError error) throws VolleyError {
+                    Log.d("VOLLEY_REQ", error.toString());
+                }
+            });
+            this.queue.add(request);
+        }
+
+    }
+
+    public void refreshNetworkToken(final HueNetwork network, final TestConnectionListener listener) {
+        try {
+            final JsonRequest request = new CustomJsonArrayRequest(
+                    Request.Method.POST,
+                    "http://" + network.getIp() + "/api",
+                    new JSONObject("{\"devicetype\" : \"HeuApp\"}"),
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            try {
+                                String token = response.getJSONObject(0).getJSONObject("success").getString("username");
+                                listener.onTokenAvailable(token);
+                                listener.tokenRefreshed(network);
+                            } catch (JSONException e) {
+                                listener.onLinkButtonNotPressed();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            listener.onTokenError();
+                        }
+                    }
+            );
+            request.setRetryPolicy(new RetryPolicy() {
+                @Override
+                public int getCurrentTimeout() {
+                    return 5000;
+                }
+
+                @Override
+                public int getCurrentRetryCount() {
+                    return 5;
                 }
 
                 @Override

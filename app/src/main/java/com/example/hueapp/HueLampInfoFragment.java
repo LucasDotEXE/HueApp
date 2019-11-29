@@ -65,6 +65,7 @@ public class HueLampInfoFragment extends Fragment {
         if (getArguments() != null) {
             hueLamp = getArguments().getParcelable(CentralVariables.HueLamp_Key);
             Log.d("Hue", "HueInfo received args. Hue:  " +   String.valueOf(hueLamp.getHue()));
+
         }
 
     }
@@ -98,6 +99,10 @@ public class HueLampInfoFragment extends Fragment {
             //buttononoff.setText(hueLamp.isOn());
             Log.d("Hue", String.valueOf(hueLamp.getBrightness()));
             //lampHue.setText(String.valueOf(hueLamp.getHue()));
+            if (hueLamp.isOn())
+                floatingActionButtonOnOff.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+            else
+                floatingActionButtonOnOff.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorLampOff)));
         }
         return view;
     }
