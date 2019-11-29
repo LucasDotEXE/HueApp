@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -96,6 +97,20 @@ public class APIConnectionSettings extends AppCompatActivity implements TestConn
                 v.getContext().startActivity(intent);
             }
         });
+
+        Button ipAddButton = findViewById(R.id.ipAddButton);
+        final EditText editText = findViewById(R.id.editText);
+
+        ipAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String ipAdress = editText.getText().toString();
+                //Todo: Check string for IP Adress format
+                HueNetwork network = new HueNetwork(ipAdress);
+                networks.add(network);
+                //CentralVariables.getInstance().setNetwork(network);
+                adapter.notifyDataSetChanged();
+            }});
 
         tokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
