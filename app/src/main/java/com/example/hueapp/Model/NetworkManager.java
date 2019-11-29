@@ -34,7 +34,7 @@ public class NetworkManager extends SQLiteOpenHelper {
         if (getNetworMap().isEmpty()) {
             fillDatabase();
         }
-        fillDatabase();
+        
     }
 
 
