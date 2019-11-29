@@ -1,6 +1,8 @@
 package com.example.hueapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -17,6 +19,8 @@ import android.widget.Toast;
 
 import com.example.hueapp.Model.CentralVariables;
 import com.example.hueapp.Model.HueLamp;
+import com.example.hueapp.View.APIConnectionSettings;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 /**
@@ -32,8 +36,9 @@ public class HueLampInfoFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private HueLamp hueLamp;
     private TextView lampID;
-    private Button buttononoff;
-    private TextView lampHue;
+    //private Button buttononoff;
+    //private TextView lampHue;
+    private FloatingActionButton floatingActionButtonOnOff;
 
     public HueLampInfoFragment() {
         // Required empty public constructor
@@ -71,15 +76,28 @@ public class HueLampInfoFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_hue_lamp_info, container, false);
         lampID = view.findViewById(R.id.lamp_id);
-        buttononoff = view.findViewById(R.id.button_on_off);
-        lampHue = view.findViewById(R.id.lamp_hue);
+        //buttononoff = view.findViewById(R.id.button_on_off);
+        //lampHue = view.findViewById(R.id.lamp_hue);
+        floatingActionButtonOnOff = view.findViewById(R.id.onoffbutton);
+        floatingActionButtonOnOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hueLamp.setOn(!hueLamp.isOn());
+                mListener.OnOnOff();
+                if (hueLamp.isOn())
+                    floatingActionButtonOnOff.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                else
+                    floatingActionButtonOnOff.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorLampOff)));
+
+            }
+        });
 
         if(this.hueLamp != null) {
-            lampID.setText(String.valueOf(hueLamp.getId()));
+            lampID.setText(String.valueOf("Lamp " + hueLamp.getId()));
             //lampID.setText("test2");
             //buttononoff.setText(hueLamp.isOn());
             Log.d("Hue", String.valueOf(hueLamp.getBrightness()));
-            lampHue.setText(String.valueOf(hueLamp.getHue()));
+            //lampHue.setText(String.valueOf(hueLamp.getHue()));
         }
         return view;
     }
@@ -120,6 +138,6 @@ public class HueLampInfoFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void OnOnOff();
     }
 }

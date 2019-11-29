@@ -58,24 +58,27 @@ public class DetailActivity extends AppCompatActivity implements HueLampInfoFrag
         }
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
 
     @Override
     public void onColorSelect(int color) {
-        Log.d("Hue", "onColorSelect called " + color);
+        //Log.d("Hue", "onColorSelect called " + color);
         float[] values = new float[3];
 /*
         color = color & 0xffffffff; //prefix opacity to 100%
         Color.colorToHSV(color, values);*/
         Color.RGBToHSV((color >> 16) & 0xff, (color >> 8) & 0xff, (color) & 0xff, values);
-        Log.d("Hue", "Translated: "+  (values[0]) + ", " + (values[1]) + ", " + (values[2]));
+        //Log.d("Hue", "Translated: "+  (values[0]) + ", " + (values[1]) + ", " + (values[2]));
         lamp.setHue((int)(values[0]* ((float)65536/360)));
         lamp.setBrightness((int)(values[1] * (float)256));
         lamp.setSaturation((int)(values[2] * (float)256));
-        HueNetwork network = CentralVariables.getInstance().getNetwork();
-        apiManager.sendUpdateToHue(network, lamp.getId(), lamp);
+        apiManager.sendUpdateToHue(CentralVariables.getInstance().getNetwork(), lamp.getId(), lamp);
+    }
+
+    @Override
+    public void OnOnOff() {
+        //Log.d("Hue", "lamp is: " + lamp.isOn());
+        //lamp.setOn(!lamp.isOn());
+        apiManager.sendUpdateToHue(CentralVariables.getInstance().getNetwork(), lamp.getId(), lamp);
     }
 }

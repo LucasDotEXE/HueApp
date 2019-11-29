@@ -61,6 +61,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TokenLis
         networks.add(new HueNetwork("145.49.15.52"));
         networks.add(new HueNetwork("192.168.1.179", "zzzMr8hp0ikDLnj-giTMF7z6Q6fai38lYGOpkEJE"));
         networks.add(new HueNetwork("192.168.1.191"));
+        networks.add(new HueNetwork("10.0.2.2", "e0bc5ab0100aa15b9e58af4254ccf80"));
         //==========================================================
 
         ArrayAdapter<HueNetwork> adapter = new ArrayAdapter<HueNetwork>(this,
