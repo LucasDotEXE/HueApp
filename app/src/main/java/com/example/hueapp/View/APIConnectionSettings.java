@@ -107,7 +107,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TestConn
             @Override
             public void onClick(View v) {
                 String ipAdress = editText.getText().toString();
-                //Todo: Check string for IP Adress format
+                //Todo: Could have: Check string for IP Adress format
                 networkManager.addIP(ipAdress);
                 HueNetwork network = new HueNetwork(ipAdress);
                 networks.add(network);
@@ -137,7 +137,7 @@ public class APIConnectionSettings extends AppCompatActivity implements TestConn
     private void areYouSureYouWantToDelete() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setMessage(R.string.warning_delete_IP + " " + getSelectedHueNetwork().getIp())
+        builder.setMessage(getString(R.string.warning_delete_IP) + " " + getSelectedHueNetwork().getIp())
                 .setCancelable(true)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
